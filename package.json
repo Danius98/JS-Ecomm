@@ -1,0 +1,28 @@
+{
+  "name": "danius-ecomm",
+  "version": "1.0.0",
+  "description": "HTML, CSS and JS ecommerce",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danius98/JS-Ecomm.git"
+  },
+  "keywords": [
+    "D98"
+  ],
+  "author": "Danius98",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danius98/JS-Ecomm/issues"
+  },
+  "homepage": "https://github.com/Danius98/JS-Ecomm#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express.js": "^1.0.0",
+    "firebase-admin": "^10.0.1",
+    "nodemon": "^2.0.15"
+  }
+}
