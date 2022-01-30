@@ -15,7 +15,7 @@ body{
 }
 
 .loader{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -32,6 +32,7 @@ body{
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="number"],
 textarea{
     display: block;
     width: 300px;
@@ -98,6 +99,7 @@ textarea{
     background-size: contain;
     background-repeat: no-repeat;
     display: none;
+    z-index: 1;
 }
 
 .checkbox:checked::after{
@@ -130,7 +132,7 @@ label a{
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 5px 100px rgba(0, 0, 0, 0.05);
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -138,6 +140,7 @@ label a{
     opacity: 0;
     pointer-events: none;
     transition: 1s;
+    z-index: 2;
 }
 
 .alert-box.show{

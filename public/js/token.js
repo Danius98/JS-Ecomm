@@ -56,6 +56,8 @@ const processData = (data) => {
         user.seller = true;
         sessionStorage.user = JSON.stringify(user);
         location.reload();
+    } else if(data.product){
+        location.href = '/seller';
     }
 }
 
@@ -67,5 +69,6 @@ const showAlert = (msg) => {
     alertBox.classList.add("show");
     setTimeout(() => {
         alertBox.classList.remove("show");
-    }, 3000)
+    }, 3000);
+    return false;
 }

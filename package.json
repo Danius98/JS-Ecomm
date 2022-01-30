@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/Danius98/JS-Ecomm#readme",
   "dependencies": {
+    "aws-sdk": "^2.1052.0",
     "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
     "express.js": "^1.0.0",
     "firebase-admin": "^10.0.1",
     "nodemon": "^2.0.15"
