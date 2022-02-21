@@ -119,6 +119,8 @@ const validateForm = () => {
 }
 
 const productData = () => {
+    let tagArr = tags.value.split(',');
+    tagArr.forEach((item, i) => tagArr[i] = tagArr[i].trim());
     return data = {
         name: productName.value,
         shortDes: shortline.value,
@@ -129,7 +131,7 @@ const productData = () => {
         discount: discountPercentage.value,
         sellPrice: sellingPrice.value,
         stock: stock.value,
-        tags: tags.value,
+        tags: tagArr,
         tac: tac.checked,
         email: user.email
     }
@@ -163,7 +165,7 @@ saveDraft.addEventListener('click', () => {
 
 const setFormsData = (data) => {
     productName.value = data.name;
-    shortLine.value = data.shortDes;
+    shortline.value = data.shortDes;
     des.value = data.des;
     actualPrice.value = data.actualPrice;
     discountPercentage.value = data.discount;
@@ -193,7 +195,6 @@ const setFormsData = (data) => {
 
 const fetchProductData = () => {
     //delete the tempProduct from the session
-    delete sessionStorage.tempProduct;
     fetch('/get-products', {
         method: 'post',
         headers: new Headers({'Content-Type': 'application/json'}),
@@ -204,15 +205,13 @@ const fetchProductData = () => {
         setFormsData(data);
     })
     .catch(err => {
-        location.replace('/seller');
+        console.log(err);
     })
 }
 
 let productId = null;
 if(location.pathname != '/add-product'){
     productId = decodeURI(location.pathname.split('/').pop());
-
-    let productDetail = JSON.parse(sessionStorage.tempProduct || null);
     //fetch the data if product is not in session
     //if(productDetail == null){
         fetchProductData();

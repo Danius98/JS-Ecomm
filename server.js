@@ -3,6 +3,7 @@ const express = require('express');
 const admin = require('firebase-admin');
 const bcrypt = require('bcrypt');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 //firebase admin setup
 
@@ -228,8 +229,16 @@ app.post('/add-product', (req, res) => {
 
 //get products
 app.post('/get-products', (req, res) => {
-    let { email, id } = req.body;
-    let docRef = id ? db.collection('products').doc(id) : db.collection('products').where('email', '==', email);
+    let { email, id, tag } = req.body;
+    //let docRef = id ? db.collection('products').doc(id) : db.collection('products').where('email', '==', email);
+    
+    if(id){
+        docRef = db.collection('products').doc(id)
+    } else if(tag){
+        docRef = db.collection('products').where('tags', 'array-contains', tag)
+    } else {
+        docRef = db.collection('products').where('email', '==', email)
+    }
 
     docRef.get()
     .then(products => {
@@ -257,6 +266,104 @@ app.post('/delete-product', (req,res) => {
         res.json('success');
     }).catch(err => {
         res.json('err');
+    })
+})
+
+// product-page
+app.get('/products/:id', (req, res) => {
+    res.sendFile(path.join(staticPath, "product.html"));
+})
+
+app.get('/search/:key', (req, res) => {
+    res.sendFile(path.join(staticPath, "search.html"));
+})
+
+app.get('/cart', (req, res) => {
+    res.sendFile(path.join(staticPath, "cart.html"));
+})
+
+app.get('/checkout', (req, res) => {
+    res.sendFile(path.join(staticPath, "checkout.html"));
+})
+
+app.post('/order', (req, res) => {
+    const { order, email, add} = req.body;
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+        }
+    })
+
+    const mailOption = {
+        from: 'daniel@gmail.com',
+        to: email,
+        subject: 'Clothing: Order Placed',
+        html: `
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            min-height: 90vh;
+            background: #f5f5f5;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heading{
+            text-align: center;
+            font-size: 40px;
+            width: 50%;
+            display: block;
+            line-height: 50px;
+            margin: 30px auto 60px;
+            text-transform: capitalize;
+        }
+        .heading span{
+            font-weight: 300;
+        }
+        .btn{
+            width: 200px;
+            height: 50px;
+            border-radius: 5px;
+            background: #3f3f3f;
+            color: #fff;
+            display: block;
+            margin: auto;
+            font-size: 18px;
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+<body>
+    
+    <div>
+        <h1 class="heading">dear ${email.split('@')[0]}<span>your order is succesfully placed</span></h1>
+        <button class="btn">check status</button>
+    </div>
+</body>
+</html>
+        `
+    }
+
+    let docName = email + Math.floor(Math.random() * 828342309);
+    db.collection('order').doc(docName).set(req.body)
+    .then(data => {
+        transporter.sendMail(mailOption, (err, info) => {
+            if(err){
+                res.json({'alert': 'ops! it seems like some error occured. Try again'})
+            } else {
+                res.json({'alert': 'your order is placed'});
+            }
+        })
     })
 })
 

@@ -2,20 +2,20 @@ const createNav = () => {
     let nav = document.querySelector('.navbar')
     nav.innerHTML = `
     <div class="nav">
-            <img src="img/dark-logo.png" class="brand-logo">
+            <img src="../img/dark-logo.png" class="brand-logo">
             <div class="nav-items">
                 <div class="search">
                     <input type="text" class="search-box" placeholder="search brand, product">
                     <button class="search-btn">search</button>
                 </div>
                 <a>
-                <img src="img/user.png" id="user-img" alt="">
+                <img src="../img/user.png" id="user-img" alt="">
                 <div class="login-logout-popup hide">
                 <p class="account-info">Log in as, name</p>
                 <button class="btn" id="user-btn">Log out</button>
                 </div>
                 </a>
-                <a href="#"><img src="img/cart.png"></a>
+                <a href="/cart"><img src="../img/cart.png"></a>
             </div>
         </div>
         <ul class="links-container">
@@ -59,3 +59,13 @@ window.onload = () => {
         })
     }
 }
+
+// search box
+
+const searchBtn = document.querySelector('.search-btn');
+const searchBox = document.querySelector('.search-box');
+searchBtn.addEventListener('click', () => {
+    if(searchBox.value.length){
+        location.href = `/search/${searchBox.value}`
+    }
+})
